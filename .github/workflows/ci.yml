@@ -16,10 +16,10 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USER }}
-        password: ${{ secrets.DOCKER_TOKEN }}
+        username: ${{ secrets.DOCKER_U }}
+        password: ${{ secrets.DOCKER_T }}
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USER }}/simple-app:${{ github.sha }} .
-        docker push ${{ secrets.DOCKER_USER }}/simple-app:${{ github.sha }}
+        docker build -t ${{ secrets.DOCKER_U }}/simple-app:${{ github.sha }} .
+        docker push ${{ secrets.DOCKER_U }}/simple-app:${{ github.sha }}
