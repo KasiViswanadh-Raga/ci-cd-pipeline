@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-app
+  name: sample-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: simple-app
+      app: sample-app
   template:
     metadata:
       labels:
-        app: simple-app
+        app: sample-app
     spec:
       containers:
-      - name: simple-app
-        image: ragakasiviswanadh/simple-app:latest
+      - name: sample-app
+        image: ragakasiviswanadh/sample-app:latest
         ports:
         - containerPort: 3000
         readinessProbe:
