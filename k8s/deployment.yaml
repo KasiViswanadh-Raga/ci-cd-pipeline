@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: simple-app
-        image: YOUR_DOCKERHUB_USERNAME/simple-app:latest
+        image: ragakasiviswanadh/simple-app:latest
         ports:
         - containerPort: 3000
         readinessProbe:
