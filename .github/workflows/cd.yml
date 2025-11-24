@@ -30,7 +30,7 @@ jobs:
     # Deploy to EKS
     - name: Deploy to EKS
       run: |
-        kubectl set image deployment/simple-app simple-app=${{ secrets.DOCKER_USERNAME }}/simple-app:${{ github.sha }}
+        kubectl set image deployment/simple-app simple-app=${{ secrets.DOCKER_USERNAME }}/simple-app:${{ github.sha }} --record
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
         kubectl rollout status deployment/simple-app
