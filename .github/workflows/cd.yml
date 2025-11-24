@@ -32,5 +32,5 @@ jobs:
       run: |
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
-        kubectl set image deployment/sample-app sample-app=${{ secrets.DOCKER_USERNAME }}/sample-app:${{ github.sha }}
+        kubectl set image deployment/sample-app sample-app=ragakasiviswanadh/sample-app:${{ github.sha }}
         kubectl rollout status deployment/sample-app
