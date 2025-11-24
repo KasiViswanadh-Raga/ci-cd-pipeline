@@ -1,4 +1,4 @@
-name: CD Deploy
+name: CD to EKS
 
 on:
   push:
@@ -10,29 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
+
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Start Minikube
-      run: |
-            minikube start --driver=docker
-            minikube update-context
-  
-
-    - name: Setup kubectl
-      uses: azure/setup-kubectl@v3
+    # Configure AWS credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        version: 'v1.28.0'
-        
-    - name: Create kube directory
-      run: mkdir -p $HOME/.kube
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
-
-    - name: Configure Kubeconfig
+    # Update kubeconfig to connect to EKS
+    - name: Update kubeconfig
       run: |
-        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+        aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
-    - name: Update Deployment Image
+    # Deploy to EKS
+    - name: Deploy to EKS
       run: |
         kubectl set image deployment/simple-app simple-app=${{ secrets.DOCKER_USERNAME }}/simple-app:${{ github.sha }}
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
         kubectl rollout status deployment/simple-app
